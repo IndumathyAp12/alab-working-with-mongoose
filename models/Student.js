@@ -1,15 +1,16 @@
 const { Schema, model } = require('../config/db-connection');
 
-const studentSchema = Schema({
+
+const studentSchema = new Schema({
   scores: [{
-    type:{
-    type: String,
-    required: true
-  },
-  score:{
-      score: Number,
+    type: {
+      type: String,
       required: true
-  }
+    },
+    score: {
+      type: Number,
+      required: true
+    }
   }],
   class_id: {
     type: Number,
@@ -20,5 +21,6 @@ const studentSchema = Schema({
     required: true
   }
 });
+
 
 module.exports = model('Student', studentSchema);
