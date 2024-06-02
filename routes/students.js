@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const gradesCtrl = require('../controllers/users.js');
+const studentsCtrl = require('../controllers/students.js');
 
 const router = Router();
 
-router.post('/', gradesCtrl.createStudent);
+router.post('/', studentsCtrl.createStudent);
 
-// router.get('/', gradesCtrl.getStudentById);
+router.get('/', studentsCtrl.getStudent);
 
 // router.put('/:id', gradesCtrl.updateStudent);
 
