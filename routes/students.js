@@ -7,7 +7,7 @@ router.post('/', studentsCtrl.createStudent);
 
 router.get('/', studentsCtrl.getStudent);
 
-router.get('/', studentsCtrl.getStudentById);
+router.get('/:id', studentsCtrl.getStudentById);
 
 router.put('/:id', studentsCtrl.updateStudent);
 
@@ -16,4 +16,3 @@ router.patch('/:id/scores/add', studentsCtrl.addScores);
 router.delete('/:id', studentsCtrl.deleteStudent);
 
 module.exports = router;
-
