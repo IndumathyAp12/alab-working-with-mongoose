@@ -2,7 +2,12 @@ const Student = require('../models/Student');
 
 module.exports = {
   createStudent,
-  getStudent
+  getStudent,
+  getStudentById,
+  updateStudent,
+  addScores,
+  deleteStudent
+
 };
 
 async function createStudent(req, res) {
@@ -22,86 +27,67 @@ async function getStudent(req, res) {
   try {
     const student = await Student.find({});
 
-    res.status(200).json(students);
+    res.status(200).json(student);
   } catch (err) {
     res.status(400).send(err);
   }
 }
 
-// async function findUsersOver21(req, res) {
-//   try {
-//     const users = await User.findOver21();
+// // Get a single student by ID
+async function getStudentById(req, res) {
+  try {
+    const student = await Student.findById(req.params.id);
 
-//     res.status(200).json(users);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
+    user.logStudentInfo();
 
-// // Get a single user by ID
-// async function getUserById(req, res) {
-//   try {
-//     const user = await User.findById(req.params.id);
+    res.status(200).json(student);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
 
-//     user.logUserInfo();
+// // Update a single student by ID
+async function updateStudent(req, res) {
+  try {
+    const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
-//     res.status(200).json(user);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
+    res.status(200).json(updatedStudent);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
 
-// // Update a single user by ID
-// async function updateUser(req, res) {
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-//       new: true,
-//     });
+// // Add a score to the scores array
+async function addScores(req, res) {
+  try {
+    // The scores we will add will be in the req.body
+    // Using the model to find the student by Id
+    const foundStudent = await Student.findById(req.params.id);
 
-//     res.status(200).json(updatedUser);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
+    const concatedArray = foundStudent.scores.concat(req.body.scores);
 
-// // Add a skill to the skills array
-// async function addSkills(req, res) {
-//   try {
-//     // The skills we will add will be in the req.body
-//     // Using the model to find the user by Id
-//     const foundUser = await User.findById(req.params.id);
+    foundStudent.scores = concatedArray;
 
-//     const concatedArray = foundUser.skills.concat(req.body.skills);
+    await foundStudent.save();
 
-//     foundUser.skills = concatedArray;
+    res.send(foundStudent);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
 
-//     await foundUser.save();
+// // Delte a single student by ID
+async function deleteStudent(req, res) {
+  try {
+    await Student.findByIdAndDelete(req.params.id);
 
-//     res.send(foundUser);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
+    res.status(200).json({
+      message: 'Successfully Deleted the Student',
+    });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
 
-// // Delte a single user by ID
-// async function deleteUser(req, res) {
-//   try {
-//     await User.findByIdAndDelete(req.params.id);
-
-//     res.status(200).json({
-//       message: 'Successfully Deleted the User',
-//     });
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
-
-// async function findByEmail(req, res) {
-//   try {
-//     const foundUser = await User.findOne({ email: req.params.email });
-
-//     res.status(200).json(foundUser);
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// }
